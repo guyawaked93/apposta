@@ -51,6 +51,7 @@ export default function BetForm({
   const odds = Number(values.odds.replace(',', '.')) || 0
   const stake = Number(values.stake.replace(',', '.')) || 0
   const expectedProfit = odds > 1 && stake > 0 ? +(stake * (odds - 1)).toFixed(2) : 0
+  const expectedReturn = odds > 0 && stake > 0 ? +(stake * odds).toFixed(2) : 0
 
   function submit(e: React.FormEvent) {
     e.preventDefault()
@@ -95,6 +96,10 @@ export default function BetForm({
         <div>
           <label htmlFor="expectedProfit" className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Lucro esperado</label>
           <input id="expectedProfit" className="input" readOnly value={expectedProfit ? expectedProfit.toFixed(2) : ''} placeholder="Preencha odds e stake" />
+        </div>
+        <div>
+          <label htmlFor="expectedReturn" className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Ganho potencial</label>
+          <input id="expectedReturn" className="input" readOnly value={expectedReturn ? expectedReturn.toFixed(2) : ''} placeholder="Odds × Stake" />
         </div>
         <div>
           <label htmlFor="status" className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Status</label>
