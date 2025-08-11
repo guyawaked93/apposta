@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Gerenciador de Apostas
 
 App React + Vite para gerenciar banca e apostas. Salva os dados no navegador (localStorage), aceita importação/exportação CSV e está pronto para deploy na Vercel ou Netlify.
@@ -32,6 +31,3 @@ Colunas esperadas: date, game, market, odds, stake, status, note
 
 ## Licença
 MIT
-=======
-# apposta
->>>>>>> 21c016c19a67dd363625394f2e8b5beb3d2d7ac9
