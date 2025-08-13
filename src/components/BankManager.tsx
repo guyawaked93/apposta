@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Bet } from '@/types'
 import { exposure, realizedProfit } from '@/types'
 
@@ -14,10 +14,34 @@ export default function BankManager({ bank, bets, onChangeBank }: Props) {
   const balance = bank + profit
   const available = Math.max(balance - exp, 0)
 
+  const [delta, setDelta] = useState<string>('')
+
   function handleBankChange(e: React.ChangeEvent<HTMLInputElement>) {
     const raw = e.target.value.replace(',', '.')
     const v = raw === '' ? NaN : Number(raw)
     onChangeBank(Number.isFinite(v) ? v : 0)
+  }
+
+  function parseDelta(): number | null {
+    const v = delta.replace(',', '.')
+    if (v.trim() === '') return null
+    const n = Number(v)
+    return Number.isFinite(n) && n > 0 ? n : null
+  }
+
+  function deposit() {
+    const n = parseDelta()
+    if (n == null) return
+    onChangeBank(bank + n)
+    setDelta('')
+  }
+
+  function withdraw() {
+    const n = parseDelta()
+    if (n == null) return
+    const next = Math.max(0, bank - n)
+    onChangeBank(next)
+    setDelta('')
   }
 
   return (
@@ -25,17 +49,35 @@ export default function BankManager({ bank, bets, onChangeBank }: Props) {
       <div className="flex flex-col md:flex-row md:items-end gap-4">
         <div className="flex-1">
           <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">Banca inicial</label>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2 items-end">
             <input
               type="number"
               inputMode="decimal"
               step="0.01"
               className="input"
-              value={Number.isFinite(bank) ? bank : '' as any}
+              value={Number.isFinite(bank) && bank !== 0 ? bank : '' as any}
               onChange={handleBankChange}
-              placeholder="Digite sua banca"
+              placeholder="0,00"
             />
             <button className="btn-secondary" onClick={() => onChangeBank(0)}>Zerar</button>
+            <div className="flex items-end gap-2">
+              <div>
+                <label className="block text-xs text-gray-600 dark:text-gray-300 mb-1">Aporte/Retirada</label>
+                <input
+                  type="number"
+                  inputMode="decimal"
+                  step="0.01"
+                  className="input"
+                  value={delta}
+                  onChange={e => setDelta(e.target.value)}
+                  placeholder="0,00"
+                />
+              </div>
+              <div className="flex gap-2">
+                <button type="button" aria-label="Aportar na banca" title="Aportar na banca" className="btn-secondary" onClick={deposit}>+ Aportar</button>
+                <button type="button" aria-label="Retirar da banca" title="Retirar da banca" className="btn-secondary" onClick={withdraw}>- Retirar</button>
+              </div>
+            </div>
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full md:w-auto">
