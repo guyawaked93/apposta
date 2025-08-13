@@ -12,14 +12,23 @@ import DutchingCalculator from './components/DutchingCalculator'
 import DutchingEachWayCalculator from './components/DutchingEachWayCalculator'
 import Bookies from './components/Bookies'
 
+const SIDEBAR_KEY = 'aposta-manager:sidebar-open'
+
 export default function App() {
   const [state, setState] = useState<AppState>(() => loadState())
   const [editing, setEditing] = useState<Bet | null>(null)
   const [filter, setFilter] = useState<'all'|'pending'|'won'|'lost'>('all')
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(() => {
+    try {
+      const raw = localStorage.getItem(SIDEBAR_KEY)
+      if (raw === null) return true // primeira visita: aberto
+      return raw === '1'
+    } catch { return true }
+  })
   const [section, setSection] = useState<SectionKey>('bets')
 
   useEffect(() => { saveState(state) }, [state])
+  useEffect(() => { try { localStorage.setItem(SIDEBAR_KEY, sidebarOpen ? '1' : '0') } catch {} }, [sidebarOpen])
 
   const filtered = useMemo(() => {
     let bets = [...state.bets]
@@ -60,8 +69,8 @@ export default function App() {
         <div className="flex items-center gap-2">
           <button
             className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-            aria-label="Abrir menu"
-            onClick={() => setSidebarOpen(true)}
+            aria-label={sidebarOpen ? 'Fechar menu' : 'Abrir menu'}
+            onClick={() => setSidebarOpen(o => !o)}
           >
             ☰
           </button>

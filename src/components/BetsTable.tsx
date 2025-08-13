@@ -87,21 +87,41 @@ export default function BetsTable({ bets, onUpdate, onDelete, onEdit }: Props) {
               </td>
               <td>{statusBadge(b.status)}</td>
               <td className="text-right">
-                <div className="flex flex-wrap gap-2 justify-end">
+                <div className="flex flex-wrap gap-1 justify-end">
                   {b.status === 'pending' ? (
                     <>
-                      <button className="btn !bg-green-600 hover:!bg-green-700 !text-xs !py-1" onClick={() => onUpdate({ ...b, status: 'won' })}>Ganhou</button>
-                      <button className="btn !bg-red-600 hover:!bg-red-700 !text-xs !py-1" onClick={() => onUpdate({ ...b, status: 'lost' })}>Perdeu</button>
+                      <button
+                        aria-label="Marcar como ganhou"
+                        title="Marcar como ganhou"
+                        className="inline-flex items-center justify-center w-7 h-7 rounded bg-green-600 hover:bg-green-700 text-white text-xs"
+                        onClick={() => onUpdate({ ...b, status: 'won' })}
+                      >✔</button>
+                      <button
+                        aria-label="Marcar como perdeu"
+                        title="Marcar como perdeu"
+                        className="inline-flex items-center justify-center w-7 h-7 rounded bg-red-600 hover:bg-red-700 text-white text-xs"
+                        onClick={() => onUpdate({ ...b, status: 'lost' })}
+                      >✖</button>
                     </>
                   ) : (
-                    <select className="input !h-8 !py-0 !text-xs w-28" value={b.status} onChange={e => onUpdate({ ...b, status: e.target.value as BetStatus })}>
+                    <select aria-label="Alterar status" className="input !h-7 !py-0 !text-xs w-28" value={b.status} onChange={e => onUpdate({ ...b, status: e.target.value as BetStatus })}>
                       <option value="pending">Pendente</option>
                       <option value="won">Ganha</option>
                       <option value="lost">Perdida</option>
                     </select>
                   )}
-                  <button className="btn-secondary !text-xs !py-1" onClick={() => onEdit(b)}>Editar</button>
-                  <button className="btn !bg-red-600 hover:!bg-red-700 !text-xs !py-1" onClick={() => onDelete(b.id)}>Excluir</button>
+                  <button
+                    aria-label="Editar aposta"
+                    title="Editar"
+                    className="inline-flex items-center justify-center w-7 h-7 rounded bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-xs"
+                    onClick={() => onEdit(b)}
+                  >✎</button>
+                  <button
+                    aria-label="Excluir aposta"
+                    title="Excluir"
+                    className="inline-flex items-center justify-center w-7 h-7 rounded bg-red-600 hover:bg-red-700 text-white text-xs"
+                    onClick={() => onDelete(b.id)}
+                  >🗑</button>
                 </div>
               </td>
             </tr>
