@@ -1,6 +1,6 @@
 import React from 'react'
 
-export type SectionKey = 'bets' | 'dutching' | 'dutchingEW' | 'bookies'
+export type SectionKey = 'bets' | 'dutching' | 'dutchingEW' | 'bookies' | 'feedback'
 
 interface SidebarProps {
   open: boolean
@@ -19,6 +19,9 @@ const items: Array<{ key: SectionKey; label: string }[]> = [
   ],
   [
     { key: 'bookies', label: 'Casas de Apostas' },
+  ],
+  [
+    { key: 'feedback', label: 'Sugestões e Bugs' },
   ],
 ]
 

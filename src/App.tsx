@@ -11,6 +11,7 @@ import Sidebar, { SectionKey } from './components/Sidebar'
 import DutchingCalculator from './components/DutchingCalculator'
 import DutchingEachWayCalculator from './components/DutchingEachWayCalculator'
 import Bookies from './components/Bookies'
+import Feedback from './components/Feedback'
 
 const SIDEBAR_KEY = 'aposta-manager:sidebar-open'
 
@@ -79,7 +80,10 @@ export default function App() {
             <p className="text-sm text-gray-600 dark:text-gray-300">Controle banca, apostas, resultados e ROI. Dados ficam no seu navegador.</p>
           </div>
         </div>
-        <ThemeToggle />
+        <div className="flex items-center gap-2">
+          <button className="btn-secondary" title="Sugestões e Bugs" onClick={() => setSection('feedback')}>💬</button>
+          <ThemeToggle />
+        </div>
       </header>
 
       <div className="grid gap-4">
@@ -124,6 +128,10 @@ export default function App() {
 
         {section === 'bookies' && (
           <Bookies />
+        )}
+
+        {section === 'feedback' && (
+          <Feedback />
         )}
       </div>
     </div>
